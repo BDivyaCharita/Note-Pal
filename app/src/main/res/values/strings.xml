@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Note Pal</string>
+    <string name="notes">Notes</string>
+    <string name="special_days">Special Days</string>
+    <string name="reminders">Reminders</string>
 </resources>
