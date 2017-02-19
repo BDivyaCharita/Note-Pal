@@ -3,4 +3,6 @@
     <string name="notes">Notes</string>
     <string name="special_days">Special Days</string>
     <string name="reminders">Reminders</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
 </resources>
