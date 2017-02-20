@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="4dp"
-    app:cardCornerRadius="3dp">
+    app:cardCornerRadius="3dp"
+    android:background="#FFF000">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/title"/>
+        android:id="@+id/note_content"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="italic"/>
 
 </android.support.v7.widget.CardView>
