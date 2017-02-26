@@ -1,10 +1,12 @@
 package com.example.divya.notepal;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,17 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.divya.notepal.Model.SpecialDaysModel;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Divya on 17-02-2017.
@@ -34,6 +39,9 @@ public class RemindersFragment extends Fragment {
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+
+    private String finalTitle;
+    private String finalDate;
 
     @Nullable
     @Override
@@ -54,6 +62,11 @@ public class RemindersFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
@@ -71,28 +84,58 @@ public class RemindersFragment extends Fragment {
             case R.id.add : {
                 Context ctx=this.getActivity();
                 final EditText etNewItem = new EditText(ctx);
-                new MaterialDialog.Builder(ctx)
-                        .title(R.string.title)
-                        .customView(R.layout.dialog_date_picker, false)
-                        .positiveText(android.R.string.ok)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                AlertDialog dialog = new AlertDialog.Builder(ctx)
+                        .setTitle("Remind me to...")
+                        .setView(etNewItem)
+                        .setPositiveButton("Pick a date", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                // TODO
+                            public void onClick(DialogInterface dialog, int which) {
                                 String itemText = etNewItem.getText().toString();
-                                itemsAdapter.add(itemText);
-                                etNewItem.setText("");
+                                finalTitle = itemText;
+                                DatePickerFragment date = new DatePickerFragment();
+                                /**
+                                 * Set Up Current Date Into dialog
+                                 */
+                                Calendar calender = Calendar.getInstance();
+                                Bundle args = new Bundle();
+                                args.putInt("year", calender.get(Calendar.YEAR));
+                                args.putInt("month", calender.get(Calendar.MONTH));
+                                args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+                                date.setArguments(args);
+                                /**
+                                 * Set Call back to capture selected date
+                                 */
+                                date.setCallBack(ondate);
+                                date.show(getActivity().getFragmentManager(), "Date Picker");
 
                             }
                         })
-                        .negativeText(android.R.string.cancel)
-                        .show();
+                        .setNegativeButton("Cancel", null)
+                        .create();
+                dialog.show();
 
+                return true;
 
             }
         }
         return super.onOptionsItemSelected(item);
     }
+
+    android.app.DatePickerDialog.OnDateSetListener ondate = new android.app.DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            finalDate = (String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear+1)
+                    + "-" + String.valueOf(year));
+
+        }
+    };
+    public void prepareData(){
+        SpecialDaysModel s = null;
+        s= new SpecialDaysModel(finalTitle, finalDate);
+
+    }
+
 
 
     private void setupListViewListener() {

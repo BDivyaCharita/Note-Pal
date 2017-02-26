@@ -42,9 +42,13 @@ import java.util.List;
 
 public class SpecialDaysFragment extends Fragment {
 
-    private List<SpecialDaysModel> specialDayList;
-    private SpecialDaysAdapter adapter;
-    private RecyclerView recyclerView;
+   // private List<SpecialDaysModel> specialDayList;
+    //private SpecialDaysAdapter adapter;
+    //private RecyclerView recyclerView;
+   private ArrayList<String> items;
+    private ArrayAdapter<String> itemsAdapter;
+    private ListView lvItems;
+
     int year_x, month_x,day_x;
     static final int DIALOG_ID = 0;
 
@@ -54,18 +58,25 @@ public class SpecialDaysFragment extends Fragment {
         View v= inflater.inflate(R.layout.special_days,container,false);
         setHasOptionsMenu(true);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+      //  recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
 
-        specialDayList= new ArrayList<>();
+      //  specialDayList= new ArrayList<>();
+
+      //  adapter = new SpecialDaysAdapter(getContext(), specialDayList);
+
+      //  recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        //recyclerView.setAdapter(adapter);
+
+        lvItems = (ListView) v.findViewById(R.id.lvItems);
+        items = new ArrayList<String>();
+
         readItems();
 
-        adapter = new SpecialDaysAdapter(getContext(), specialDayList);
+        itemsAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, items);
+        lvItems.setAdapter(itemsAdapter);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
-        recyclerView.setAdapter(adapter);
-
-        setupListViewListener();
+         setupListViewListener();
 
         return v;
     }
@@ -111,6 +122,7 @@ public class SpecialDaysFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 String itemText = etNewItem.getText().toString();
                                  finalTitle = itemText;
+
                                 DatePickerFragment date = new DatePickerFragment();
                                 /**
                                  * Set Up Current Date Into dialog
@@ -124,8 +136,11 @@ public class SpecialDaysFragment extends Fragment {
                                 /**
                                  * Set Call back to capture selected date
                                  */
+
                                 date.setCallBack(ondate);
                                 date.show(getActivity().getFragmentManager(), "Date Picker");
+
+
 
                             }
                         })
@@ -147,15 +162,21 @@ public class SpecialDaysFragment extends Fragment {
                               int dayOfMonth) {
             finalDate = (String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear+1)
                     + "-" + String.valueOf(year));
-            SpecialDaysModel s = null;
-            s= new SpecialDaysModel(finalTitle, finalDate);
+            itemsAdapter.add(finalTitle +"\n" + finalDate);
 
-            specialDayList.add(s);
         }
     };
+    public void prepareData(){
+        /*SpecialDaysModel s = null;
+        s= new SpecialDaysModel(finalTitle, finalDate);
+
+        specialDayList.add(s);
+        */
+        itemsAdapter.add(finalTitle+ "\n" +finalDate);
+    }
 
     private void setupListViewListener() {
-       /* lvItems.setOnItemLongClickListener(
+        lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapter,
@@ -169,16 +190,16 @@ public class SpecialDaysFragment extends Fragment {
                         return true;
                     }
 
-                }); */
+                });
     }
 
     private void readItems() {
         File filesDir = getActivity().getFilesDir();
         File todoFile = new File(filesDir, "specialDays.txt");
         try {
-            specialDayList = new ArrayList<SpecialDaysModel>(FileUtils.readLines(todoFile));
+            items = new ArrayList<String>(FileUtils.readLines(todoFile));
         } catch (IOException e) {
-            specialDayList = new ArrayList<SpecialDaysModel>();
+            items = new ArrayList<String>();
         }
     }
 
@@ -186,7 +207,7 @@ public class SpecialDaysFragment extends Fragment {
         File filesDir = getActivity().getFilesDir();
         File todoFile = new File(filesDir, "specialDays.txt");
         try {
-            FileUtils.writeLines(todoFile, specialDayList);
+            FileUtils.writeLines(todoFile, items);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 public class SpecialDaysModel {
     public String specialDayTitle;
     public String spacialDayDate;
+    public  SpecialDaysModel(){
+
+    }
 
     public SpecialDaysModel(String specialDayTitle, String spacialDayDate) {
         this.specialDayTitle = specialDayTitle;

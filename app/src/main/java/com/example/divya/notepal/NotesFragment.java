@@ -71,11 +71,13 @@ public class NotesFragment extends Fragment {
                 android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
 
+
         setupListViewListener();
 
         return v;
 
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -104,7 +106,7 @@ public class NotesFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 String task = String.valueOf(etNewItem.getText());
                                 String itemText = etNewItem.getText().toString();
-                                itemsAdapter.add(itemText);
+                                itemsAdapter.add(itemText+"\n" +itemText);
                                 etNewItem.setText("");
                             }
                         })
