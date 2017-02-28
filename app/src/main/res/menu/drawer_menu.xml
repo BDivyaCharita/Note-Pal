@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/notes"
+            android:title="Notes"
+            android:icon="@drawable/ic_note_black_24dp"
+            ></item>
+        <item
+            android:id="@+id/specialDays"
+            android:title="Special Days"
+            android:icon="@drawable/ic_cake_black_24dp"
+            ></item>
+        <item
+            android:id="@+id/reminders"
+            android:title="Reminders"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            ></item>
+
+
+    </group>
+</menu>

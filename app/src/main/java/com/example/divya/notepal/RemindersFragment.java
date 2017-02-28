@@ -127,6 +127,7 @@ public class RemindersFragment extends Fragment {
                               int dayOfMonth) {
             finalDate = (String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear+1)
                     + "-" + String.valueOf(year));
+            itemsAdapter.add(finalTitle +"\n" + finalDate);
 
         }
     };

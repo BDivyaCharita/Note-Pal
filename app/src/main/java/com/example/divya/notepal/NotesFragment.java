@@ -56,12 +56,14 @@ public class NotesFragment extends Fragment {
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+    private String itemText;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.notes,container,false);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         lvItems = (ListView) v.findViewById(R.id.lvItems);
         items = new ArrayList<String>();
@@ -77,7 +79,6 @@ public class NotesFragment extends Fragment {
         return v;
 
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -105,8 +106,8 @@ public class NotesFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String task = String.valueOf(etNewItem.getText());
-                                String itemText = etNewItem.getText().toString();
-                                itemsAdapter.add(itemText+"\n" +itemText);
+                                 itemText = etNewItem.getText().toString();
+                                itemsAdapter.add(itemText);
                                 etNewItem.setText("");
                             }
                         })
@@ -119,6 +120,22 @@ public class NotesFragment extends Fragment {
              }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("items",itemText);
+
+
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
     }
 
     private void setupListViewListener() {

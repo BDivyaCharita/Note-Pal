@@ -45,12 +45,22 @@ public class SpecialDaysFragment extends Fragment {
    // private List<SpecialDaysModel> specialDayList;
     //private SpecialDaysAdapter adapter;
     //private RecyclerView recyclerView;
-   private ArrayList<String> items;
+   private static final String STATE_COUNTER = "counter";
+
+    private int mCounter;
+
+    private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
 
     int year_x, month_x,day_x;
     static final int DIALOG_ID = 0;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
@@ -211,6 +221,14 @@ public class SpecialDaysFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Make sure to call the super method so that the states of our views are saved
+        super.onSaveInstanceState(outState);
+        // Save our own state now
+        outState.putInt(STATE_COUNTER, mCounter);
     }
 
 
